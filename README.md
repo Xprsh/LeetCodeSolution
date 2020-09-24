@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年9月23日
+###### 最后更新于：2020年9月24日
 
 # LeetCode
 
@@ -3755,4 +3755,163 @@ public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
         return node;
     }
 ```
+
+#### Q501. 二叉树中的众数
+
+※2020/9/24 每日一题
+
+给定一个有相同值的二叉搜索树（BST），找出 BST 中的所有众数（出现频率最高的元素）。
+
+假定 BST 有如下定义：
+
+- 结点左子树中所含结点的值小于等于当前结点的值
+- 结点右子树中所含结点的值大于等于当前结点的值
+- 左子树和右子树都是二叉搜索树
+
+例如：
+给定 BST `[1,null,2,2]`,
+
+```
+   1
+    \
+     2
+    /
+   2
+```
+
+`返回[2]`
+
+**提示**：如果众数超过1个，不需考虑输出顺序
+
+**进阶：**你可以不使用额外的空间吗？（假设由递归产生的隐式调用栈的开销不被计算在内）
+
+
+
+
+
+**思路：**
+
+这道题我的思路是先利用中序遍历得到升序排列的数组，再统计众数，但是过程过于复杂，贴个代码先
+
+```java
+public int[] findMode(TreeNode root) {
+        ArrayList<Integer> list = order(root);
+        ArrayList<Integer> result = new ArrayList<>();
+        int curCount = 0;
+        int maxCount = 0;
+        Integer cur = null;
+
+        int size = list.size();
+
+        for(int i = 0;i<size;i++){
+            Integer e = list.get(i);
+            if(i == 0){
+                cur = e;
+                curCount++;
+                continue;
+            }
+
+            if(cur.equals(e)){
+                curCount++;
+            }else {
+                if(curCount > maxCount){
+                    result.clear();
+                    result.add(cur);
+                    maxCount = curCount;
+                    cur = e;
+                    curCount = 1;
+                }else if(curCount == maxCount){
+                    result.add(cur);
+                    cur = e;
+                    curCount = 1;
+                }else{
+                    cur = e;
+                    curCount = 1;
+                }
+            }
+
+            if(i == size - 1){
+                if(curCount > maxCount){
+                    result.clear();
+                    result.add(cur);
+                }else if(curCount == maxCount){
+                    result.add(cur);
+                }
+            }
+        }
+
+        int[] ans = new int[result.size()];
+
+        for(int i = 0;i<result.size();i++){
+            ans[i] = result.get(i);
+        }
+
+        return ans;
+    }
+
+    public ArrayList<Integer> order(TreeNode root){
+        ArrayList<Integer> list = new ArrayList<>();
+        if(root == null){
+            return list;
+        }
+        list.addAll(order(root.left));
+        list.add(root.val);
+        list.addAll(order(root.right));
+
+        return list;
+    }
+```
+
+
+
+后面看题解，发现可以将众数识别代码提取出来，然后直接在中序遍历的时候比较即可得出，修改后代码如下：
+
+```java
+public class Q501_FindMode {
+
+    int cur;
+    int curCount;
+    int maxCount;
+    List<Integer> answer = new ArrayList<>();
+    public int[] findMode(TreeNode root) {
+        order(root);
+        int[] result = new int[answer.size()];
+
+        for(int i = 0;i<answer.size();i++){
+            result[i] = answer.get(i);
+        }
+
+        return result;
+    }
+
+    public void order(TreeNode root){
+        if(root == null){
+            return ;
+        }
+        order(root.left);
+        update(root.val);
+        order(root.right);
+    }
+
+    // 众数比较
+    public void update(int x){
+        if (x == cur){
+            curCount++;
+        }else{
+            curCount = 1;
+            cur = x;
+        }
+
+        if(curCount == maxCount){
+            answer.add(cur);
+        }
+
+        if (curCount > maxCount){
+            maxCount = curCount;
+            answer.clear();
+            answer.add(cur);
+        }
+    }
+```
+
 
