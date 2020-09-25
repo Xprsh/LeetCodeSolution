@@ -3756,7 +3756,7 @@ public TreeNode mergeTrees(TreeNode t1, TreeNode t2) {
     }
 ```
 
-#### Q501. 二叉树中的众数
+### Q501. 二叉树中的众数
 
 ※2020/9/24 每日一题
 
@@ -3979,4 +3979,152 @@ public TreeNode buildTree(int[] inorder, int[] postorder) {
 }
 ```
 
+
+### Q12. 整数转罗马数字
+
+罗马数字包含以下七种字符： `I`， `V`， `X`， `L`，`C`，`D` 和 `M`。
+
+```
+字符          数值
+I             1
+V             5
+X             10
+L             50
+C             100
+D             500
+M             1000
+```
+
+例如， 罗马数字 2 写做 `II` ，即为两个并列的 1。12 写做 `XII` ，即为 `X` + `II` 。 27 写做 `XXVII`, 即为 `XX` + `V` + `II` 。
+
+通常情况下，罗马数字中小的数字在大的数字的右边。但也存在特例，例如 4 不写做 `IIII`，而是 `IV`。数字 1 在数字 5 的左边，所表示的数等于大数 5 减小数 1 得到的数值 4 。同样地，数字 9 表示为 `IX`。这个特殊的规则只适用于以下六种情况：
+
+- `I` 可以放在 `V` (5) 和 `X` (10) 的左边，来表示 4 和 9。
+- `X` 可以放在 `L` (50) 和 `C` (100) 的左边，来表示 40 和 90。 
+- `C` 可以放在 `D` (500) 和 `M` (1000) 的左边，来表示 400 和 900。
+
+给定一个整数，将其转为罗马数字。输入确保在 1 到 3999 的范围内。
+
+
+
+**个人思路：**
+
+将给定的整数转换为罗马数字需要找到上述 13 个符号的序列，这些符号的对应值加起来就是整数。根据符号值，此序列必须按从大到小的顺序排列。符号值如下。
+
+<img src="https://img-blog.csdnimg.cn/20200414105909472.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3dlaXhpbl8zOTEzOTUwNQ==,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述" style="zoom:50%;" />
+
+如概述中所述，表示应该使用尽可能大的符号，从左侧开始工作。因此，使用贪心算法是有意义的。贪心算法是一种在当前时间做出最佳可能决策的算法；在这种情况下，它会取出最大可能的符号。
+
+为了表示一个给定的整数，我们寻找适合它的最大符号。我们减去它，然后寻找适合余数的最大符号，依此类推，直到余数为0。我们取出的每个符号都附加到输出的罗马数字字符串上。
+
+```java
+public String intToRoman(int num) {
+        if(num < 1 || num > 3999){
+            return "error";
+        }
+
+        String result = "";
+
+        while(num != 0){
+            while(num / 1000 != 0){
+                result += "M";
+                num -= 1000;
+                continue;
+            }
+
+            while(num / 900 != 0){
+                result += "CM";
+                num -= 900;
+                continue;
+            }
+
+            while(num / 500 != 0){
+                result += "D";
+                num -= 500;
+                continue;
+            }
+
+            while(num / 400 != 0){
+                result += "CD";
+                num -= 400;
+                continue;
+            }
+
+            while(num / 100 != 0){
+                result += "C";
+                num -= 100;
+                continue;
+            }
+
+            while(num / 90 != 0){
+                result += "XC";
+                num -= 90;
+                continue;
+            }
+
+            while(num / 50 != 0){
+                result += "L";
+                num -= 50;
+                continue;
+            }
+
+            while(num / 40 != 0){
+                result += "XL";
+                num -= 40;
+                continue;
+            }
+
+            while(num / 10 != 0){
+                result += "X";
+                num -= 10;
+                continue;
+            }
+
+            while(num / 9 != 0){
+                result += "IX";
+                num -= 9;
+                continue;
+            }
+
+            while(num / 5 != 0){
+                result += "V";
+                num -= 5;
+                continue;
+            }
+
+            while(num / 4 != 0){
+                result += "IV";
+                num -= 4;
+                continue;
+            }
+
+            while(num / 1 != 0){
+                result += "I";
+                num -= 1;
+                continue;
+            }
+        }
+        return result;
+    }
+```
+
+当然官方写法比我简洁多了（自己有个问题，遇到需要经常变化的字符串应该使用StringBuilder/StringBuffer而非String以提高效率）
+
+```java
+int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};    
+String[] symbols = {"M","CM","D","CD","C","XC","L","XL","X","IX","V","IV","I"};
+
+public String intToRoman(int num) {
+    StringBuilder sb = new StringBuilder();
+    // Loop through each symbol, stopping if num becomes 0.
+    for (int i = 0; i < values.length && num >= 0; i++) {
+        // Repeat while the current symbol still fits into num.
+        while (values[i] <= num) {
+            num -= values[i];
+            sb.append(symbols[i]);
+        }
+    }
+    return sb.toString();
+}
+```
 
