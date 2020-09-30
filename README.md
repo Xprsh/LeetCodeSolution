@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年9月28日
+###### 最后更新于：2020年9月30日
 
 # LeetCode
 
@@ -4159,4 +4159,172 @@ struct Node {
 **思路：**
 
 广度优先搜索，层次遍历二叉树即可
+
+```java
+public Node connect(Node root) {
+    LinkedList<Node> list = new LinkedList<>();
+    if(root == null){
+        return root;
+    }
+
+    list.add(root);
+    int size = list.size();
+    while(size > 0){
+        for(int i = 0;i < size; i++){
+            Node node = list.removeFirst();
+
+            if(node.left != null){
+                list.add(node.left);
+            }
+
+            if(node.right != null){
+                list.add(node.right);
+            }
+            // 该层最后一个元素
+            if(i == size - 1){
+                node.next = null;
+            }else{
+                node.next = list.peek();
+            }
+        }
+
+        size = list.size();
+    }
+    return root;
+}
+
+/**
+ * 结点 Node 定义
+ */
+class Node {
+    public int val;
+    public Node left;
+    public Node right;
+    public Node next;
+
+    public Node() {}
+
+    public Node(int _val) {
+        val = _val;
+    }
+
+    public Node(int _val, Node _left, Node _right, Node _next) {
+        val = _val;
+        left = _left;
+        right = _right;
+        next = _next;
+    }
+}
+```
+
+
+
+### Q701. 二叉搜索树中的插入操作
+
+※2020/9/30 每日一题
+提前祝大家节日快乐
+
+给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点。 输入数据保证，新值和原始二叉搜索树中的任意节点值都不同。
+
+注意，可能存在多种有效的插入方式，只要树在插入后仍保持为二叉搜索树即可。 你可以返回任意有效的结果。
+
+ 
+
+例如, 
+
+```
+给定二叉搜索树:
+
+        4
+       / \
+      2   7
+     / \
+    1   3
+
+和 插入的值: 5
+```
+
+你可以返回这个二叉搜索树:
+
+```
+         4
+       /   \
+      2     7
+     / \   /
+    1   3 5
+```
+
+或者这个树也是有效的:
+
+```
+         5
+       /   \
+      2     7
+     / \   
+    1   3
+         \
+          4
+```
+
+ 
+
+**提示：**
+
+- 给定的树上的节点数介于 `0` 和 `10^4` 之间
+- 每个节点都有一个唯一整数值，取值范围从 `0` 到 `10^8`
+- `-10^8 <= val <= 10^8`
+- 新值和原始二叉搜索树中的任意节点值都不同
+
+**思路：**
+
+深度优先搜索，当前val的适当位置 并 插入
+
+```java
+public TreeNode insertIntoBST(TreeNode root, int val) {
+    if(root == null){
+        return new TreeNode(val);
+    }
+
+    TreeNode node = root;
+    while(true){
+        if(val > node.val){
+            if(node.right == null){
+                node.right = new TreeNode(val);
+                break;
+            }else{
+                node = node.right;
+                continue;
+            }
+        }
+
+        if(val < node.val){
+            if(node.left == null){
+                node.left = new TreeNode(val);
+                break;
+            }else{
+                node = node.left;
+                continue;
+            }
+        }
+
+        if(val == node.val){
+            if(node.left == null){
+                node.left = new TreeNode(val);
+                break;
+            }
+
+            if(node.right == null){
+                node.right = new TreeNode(val);
+                break;
+            }else{
+                node = node.right;
+                continue;
+            }
+        }
+    }
+
+    return root;
+}
+```
+
 

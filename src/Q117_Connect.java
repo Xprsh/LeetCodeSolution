@@ -59,5 +59,5 @@ public class Q117_Connect {
             right = _right;
             next = _next;
         }
-    };
+    }
 }
