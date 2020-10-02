@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年9月30日
+###### 最后更新于：2020年10月2日
 
 # LeetCode
 
@@ -4325,6 +4325,50 @@ public TreeNode insertIntoBST(TreeNode root, int val) {
 
     return root;
 }
+```
+
+### Q771. 宝石与石头
+
+※2020/20/2 每日一题
+
+给定字符串`J` 代表石头中宝石的类型，和字符串 `S`代表你拥有的石头。 `S` 中每个字符代表了一种你拥有的石头的类型，你想知道你拥有的石头中有多少是宝石。
+
+`J` 中的字母不重复，`J` 和 `S`中的所有字符都是字母。字母区分大小写，因此`"a"`和`"A"`是不同类型的石头。
+
+**思路：**
+
+方法一中，对于字符串 S 中的每个字符，都需要遍历一次字符串 J，导致时间复杂度较高。如果使用哈希集合存储字符串 J中的宝石，则可以降低判断的时间复杂度。
+
+遍历字符串 J，使用哈希集合存储其中的字符，然后遍历字符串 S，对于其中的每个字符，如果其在哈希集合中，则是宝石。
+
+
+
+PS：我用的是 List ，思路是差不多
+
+```java
+public int numJewelsInStones(String J, String S) {
+        if(J == null || S == null){
+            return 0;
+        }
+
+        int len1 = J.length();
+        int len2 = S.length();
+
+        List<Character> list = new ArrayList<>();
+        for(int i = 0; i < len1; i++){
+            if(!list.contains(J.charAt(i))){
+                list.add(J.charAt(i));
+            }
+        }
+
+        int ans = 0;
+        for(int i = 0; i < len2; i++){
+            if(list.contains(S.charAt(i))){
+                ans++;
+            }
+        }
+        return ans;
+    }
 ```
 
 
