@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年10月2日
+###### 最后更新于：2020年10月7日
 
 # LeetCode
 
@@ -4369,6 +4369,104 @@ public int numJewelsInStones(String J, String S) {
         }
         return ans;
     }
+```
+
+### Q75. 颜色分类
+
+※2020/10/7 每日一题
+
+给定一个包含红色、白色和蓝色，一共 *n* 个元素的数组，**[原地](https://baike.baidu.com/item/原地算法)**对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+此题中，我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+
+**注意:**
+不能使用代码库中的排序函数来解决这道题。
+
+**示例:**
+
+```
+输入: [2,0,2,1,1,0]
+输出: [0,0,1,1,2,2]
+```
+
+**进阶：**
+
+- 一个直观的解决方案是使用计数排序的两趟扫描算法。
+  首先，迭代计算出0、1 和 2 元素的个数，然后按照0、1、2的排序，重写当前数组。
+- 你能想出一个仅使用常数空间的一趟扫描算法吗？
+
+
+
+**思路：**
+
+1 两趟扫描法
+
+先扫描一遍得到0 1 2 的数量，然后再重新排列一遍
+
+```java
+public void sortColors(int[] nums) {
+    if (nums == null || nums.length == 0) {
+        return;
+    }
+
+    int[] counts = new int[3];
+
+    for (int num : nums) {
+        counts[num]++;
+    }
+
+    int i = 0;
+    int flag = 0;
+    for (int count : counts) {
+        for (int j = 0; j < count; j++) {
+            nums[i++] = flag;
+        }
+        flag++;
+    }
+}
+```
+
+2 双指针法
+
+利用双指针解法解答颜色分类问题(荷兰国旗问题)
+双指针将0移到数组左边，2移到数组右边
+
+由于此时其中一个指针 p_2*p*2 是**从右向左**移动的，因此当我们在**从左向右**遍历整个数组时，如果遍历到的位置超过了 p_2*p*2，那么就可以直接停止遍历了。
+
+```java
+    public void sortColors(int[] nums) {
+
+        if (nums == null || nums.length < 2) {
+            return;
+        }
+
+        int len = nums.length;
+
+        // 头指针
+        int first = 0;
+        // 尾指针
+        int last = len - 1;
+
+        for (int i = 0; i < len; i++) {
+            // 越界，停止交换
+            if (i > last) {
+                return;
+            }
+
+            if (nums[i] == 0) {
+                if (i != first) {
+                    swap(nums, i, first);
+                }
+                first++;
+            } else if (nums[i] == 2) {
+                if (i != last) {
+                    swap(nums, i, last);
+                    // 下一轮重新判断
+                    i--;
+                }
+                last--;
+            }
+        }
 ```
 
 
