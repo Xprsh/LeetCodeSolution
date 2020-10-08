@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年10月7日
+###### 最后更新于：2020年10月8日
 
 # LeetCode
 
@@ -4468,5 +4468,56 @@ public void sortColors(int[] nums) {
             }
         }
 ```
+
+### Q344. 反转字符串
+
+※2020/10/8 每日一题
+
+编写一个函数，其作用是将输入的字符串反转过来。输入字符串以字符数组 `char[]` 的形式给出。
+
+不要给另外的数组分配额外的空间，你必须**[原地](https://baike.baidu.com/item/原地算法)修改输入数组**、使用 O(1) 的额外空间解决这一问题。
+
+你可以假设数组中的所有字符都是 [ASCII](https://baike.baidu.com/item/ASCII) 码表中的可打印字符。
+
+ 
+
+**思路：**
+
+双指针
+
+对于字符串，我们定义两个指针（也可以说是索引下表），一个从字符串前面，一个从字符串后面，两个指针同时向中间移动，并交换元素。
+
+以字符串`hello`为例，过程如下：
+![344.反转字符串.gif](https://pic.leetcode-cn.com/d7ad98321a2ad67020591054eab64dd90afd12106d32195cc974cbf038577ae3-344.%E5%8F%8D%E8%BD%AC%E5%AD%97%E7%AC%A6%E4%B8%B2.gif)
+
+```java
+public void reverseString(char[] s) {
+    if (s == null || s.length <= 1) {
+        return;
+    }
+
+    int len = s.length;
+    int mid = 0;
+    if (len % 2 == 0) {
+        mid = len / 2 - 1;
+    } else {
+        mid = len / 2;
+    }
+
+    for (int i = 0; i <= mid; i++) {
+        int last = len - 1 - i;
+        if (i != last) {
+            swap(s, i, last);
+        }
+    }
+}
+
+void swap(char[] s, int a, int b) {
+    char temp = s[a];
+    s[a] = s[b];
+    s[b] = temp;
+}
+```
+
 
 
