@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年10月8日
+###### 最后更新于：2020年10月9日
 
 # LeetCode
 
@@ -853,6 +853,8 @@ public int minSubArrayLen(int s, int[] nums) {
 
 ### Q141. 环形链表
 
+※2020/10/9 每日一题
+
 给定一个链表，判断链表中是否有环。
 
 为了表示给定链表中的环，我们使用整数 `pos` 来表示链表尾连接到链表中的位置（索引从 0 开始）。 如果 `pos` 是 `-1`，则在该链表中没有环。
@@ -866,32 +868,32 @@ public int minSubArrayLen(int s, int[] nums) {
 下面以快慢指针为例：
 
 **代码：**
-
 ```java
-public boolean hasCycle(ListNode head) {
-    if (head == null || head.next == null) {
-        return false;
-    }
+    public boolean hasCycle(ListNode head) {
+        if (head == null || head.next == null) {
+            return false;
+        }
 
-    ListNode fast = head;
-    ListNode slow = head;
+        ListNode slow = head;
+        ListNode fast = head.next;
 
-    // 快慢指针，快指针每次走两步，慢指针走一步
-    while (true) {
-        for (int i = 0; i < 2; i++) {
-            fast = fast.next;
-            if (fast == slow) {
+        while (true) {
+            // 满指针追上快指针，说明有环
+            if (slow == fast) {
                 return true;
             }
-            if (fast == null) {
+
+            if (fast.next == null || fast.next.next == null) {
                 return false;
             }
-        }
-        slow = slow.next;
-    }
-}
-```
 
+            // 快指针走两步
+            fast = fast.next.next;
+            // 慢指针走一步
+            slow = slow.next;
+        }
+    }
+```
 
 
 ### Q202. 快乐数

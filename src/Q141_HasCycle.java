@@ -10,24 +10,26 @@ public class Q141_HasCycle {
             return false;
         }
 
-
-        ListNode fast = head;
         ListNode slow = head;
+        ListNode fast = head.next;
 
-        // 快慢指针，快指针每次走两步，慢指针走一步
         while (true) {
-            for (int i = 0; i < 2; i++) {
-                fast = fast.next;
-                if (fast == slow) {
-                    return true;
-                }
-                if (fast == null) {
-                    return false;
-                }
+            // 满指针追上快指针，说明有环
+            if (slow == fast) {
+                return true;
             }
+
+            if (fast.next == null || fast.next.next == null) {
+                return false;
+            }
+
+            // 快指针走两步
+            fast = fast.next.next;
+            // 慢指针走一步
             slow = slow.next;
         }
     }
+
 
     public static void main(String[] args) {
         Q141_HasCycle obj = new Q141_HasCycle();
