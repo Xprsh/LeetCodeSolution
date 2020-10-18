@@ -3,7 +3,48 @@
  * 给定一个链表，删除链表的倒数第 n 个节点，并且返回链表的头结点。
  */
 public class Q19_DeleteTheNthNodeFromTheBottom {
+    /**
+     * 2020.10.18 重新写了一遍，更加清晰
+     * @param head
+     * @param n
+     * @return
+     */
     public ListNode removeNthFromEnd(ListNode head, int n) {
+
+        // 双指针指针
+        ListNode slow = head;
+        ListNode fast = head;
+
+        // 待删除节点的上一个结点
+        ListNode pre = null;
+
+        // 快指针先走一步
+        for(int i = 0;i < n - 1;i++){
+            fast = fast.next;
+        }
+
+        while(fast.next != null){
+            fast = fast.next;
+            pre = slow;
+            slow = slow.next;
+        }
+
+        // 删除头节点
+        if(pre == null){
+            return head.next;
+        }
+
+        // 如果fast == slow，说明删除末尾节点
+        if(fast == slow){
+            pre.next = null;
+            return head;
+        }
+
+        // 其余的将pre指向slow.next即可删除要删除的节点
+        pre.next = slow.next;
+        return head;
+    }
+    public ListNode removeNthFromEnd_1(ListNode head, int n) {
 
         if (head == null) {
             throw new IllegalArgumentException("ListNode Is Null");

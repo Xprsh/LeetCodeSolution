@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年10月9日
+###### 最后更新于：2020年10月18日
 
 # LeetCode
 
@@ -4520,6 +4520,66 @@ void swap(char[] s, int a, int b) {
     s[b] = temp;
 }
 ```
+### Q19. 删除链表的倒数第 n 个节点
+
+※2020/10/18 每日一题
+
+给定一个链表，删除链表的倒数第 *n* 个节点，并且返回链表的头结点。
+
+**思路：**
+
+使用双指针，快指针先走 n - 1步，然后快慢指针同步走，同时保存慢指针的上一个元素pre，当快指针走到链表尾的时候，将pre指向慢指针的下一个元素即可。
 
 
+
+注意：需要考虑特殊组合
+
+1. slow == fast，代表删除最后一个节点，此时当快指针/慢指针走到尾部时，pre需要指向null（其实也不需要，slow.next也可以，个人直接理解成空）
+2. pre == null，即慢指针指向头节点时，快指针就已经到达末尾，代表删除头节点，返回head.next即可
+
+
+
+```java
+/**
+ * 2020.10.18 重新写了一遍，更加清晰
+ * @param head
+ * @param n
+ * @return
+ */
+public ListNode removeNthFromEnd(ListNode head, int n) {
+
+    // 双指针指针
+    ListNode slow = head;
+    ListNode fast = head;
+
+    // 待删除节点的上一个结点
+    ListNode pre = null;
+
+    // 快指针先走一步
+    for(int i = 0;i < n - 1;i++){
+        fast = fast.next;
+    }
+
+    while(fast.next != null){
+        fast = fast.next;
+        pre = slow;
+        slow = slow.next;
+    }
+
+    // 删除头节点
+    if(pre == null){
+        return head.next;
+    }
+
+    // 如果fast == slow，说明删除末尾节点
+    if(fast == slow){
+        pre.next = null;
+        return head;
+    }
+
+    // 其余的将pre指向slow.next即可删除要删除的节点
+    pre.next = slow.next;
+    return head;
+}
+```
 
