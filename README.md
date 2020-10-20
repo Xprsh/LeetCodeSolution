@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年10月18日
+###### 最后更新于：2020年10月20日
 
 # LeetCode
 
@@ -4638,5 +4638,67 @@ public boolean backspaceCompare(String S, String T) {
         }
         return true;
     }
+```
+
+### Q143. 重排链表
+
+※2020/10/20 每日一题
+
+给定一个单链表 *L*：*L*0→*L*1→…→*L*n*-1→*Ln ，
+将其重新排列后变为： *L*0→*L*n*→*L*1→*L*n*-1→*L*2→*Ln*-2→…
+
+你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+
+**示例 1:**
+
+```
+给定链表 1->2->3->4, 重新排列为 1->4->2->3.
+```
+
+**示例 2:**
+
+```
+给定链表 1->2->3->4->5, 重新排列为 1->5->2->4->3.
+```
+
+
+
+**思路：**
+
+使用双向队列
+
+```java
+ublic void reorderList(ListNode head) {
+    if(head == null || head.next == null){
+        return ;
+    }
+
+    Deque<ListNode> deque =new ArrayDeque<>();
+    ListNode node = head.next;
+    while(node != null){
+        deque.add(node);
+        node = node.next;
+    }
+
+    boolean flag = true;
+    node = head;
+    while(node != null){
+        if(flag){
+            node.next = deque.pollLast();
+        }else{
+            node.next = deque.pollFirst();
+        }
+
+
+        if(deque.isEmpty()){
+            node.next.next = null;
+            break;
+        }
+
+        node= node.next;
+        flag = !flag;
+    }
+
+}
 ```
 
