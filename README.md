@@ -1,5 +1,5 @@
 ## 这是我的 LeetCode 题解集，希望能对你有所帮助
-###### 最后更新于：2020年10月20日
+###### 最后更新于：2020年10月27日
 
 # LeetCode
 
@@ -4700,5 +4700,35 @@ ublic void reorderList(ListNode head) {
     }
 
 }
+```
+
+### Q144. 二叉树的前序遍历
+
+※2020/10/27 每日一题
+
+给定一个二叉树，返回它的 *前序* 遍历。
+
+
+
+**思路：**
+
+使用递归模拟前序遍历即可
+
+```java
+    public List<Integer> preorderTraversal(TreeNode root) {
+        return preorder(root,new ArrayList<Integer>());
+    }
+
+    List<Integer> preorder(TreeNode node, List<Integer> list){
+        if(node == null){
+            return list;
+        }
+
+        list.add(node.val);
+        preorder(node.left, list);
+        preorder(node.right,list);
+
+        return list;
+    }
 ```
 

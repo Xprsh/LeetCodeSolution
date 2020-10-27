@@ -3,27 +3,24 @@ import java.util.List;
 
 /**
  * Q144. 二叉树的前序遍历
- * <p>
+ *
  * 给定一个二叉树，返回它的 前序 遍历。
  */
 public class Q144_PreorderTraversal {
     public List<Integer> preorderTraversal(TreeNode root) {
-        List<Integer> order = new ArrayList<>();
-
-        if (root == null) {
-            return order;
-        }
-
-        return preOrder(root, order);
+        return preorder(root,new ArrayList<Integer>());
     }
 
-    private List<Integer> preOrder(TreeNode root, List<Integer> order) {
-        if (root == null) {
-            return order;
+    List<Integer> preorder(TreeNode node, List<Integer> list){
+        if(node == null){
+            return list;
         }
-        order.add(root.val);
-        order.addAll(preOrder(root.left, new ArrayList<>()));
-        order.addAll(preOrder(root.right, new ArrayList<>()));
-        return order;
+
+        list.add(node.val);
+        preorder(node.left, list);
+        preorder(node.right,list);
+
+        return list;
     }
+
 }
